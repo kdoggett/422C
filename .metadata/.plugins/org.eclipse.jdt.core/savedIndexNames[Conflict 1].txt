@@ -1,0 +1,4 @@
+INDEX VERSION 1.127+C:\Users\XPS15\Google Drive\School\422C\Code\.metadata\.plugins\org.eclipse.jdt.core
+3187168191.index
+2512136665.index
+472717305.index
