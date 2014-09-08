@@ -66,16 +66,32 @@ public class A1Driver
 	 * 		
 	 * @return the String object containing the Palindromes found in the
 	 *         inputString    
+	 *         
+	 *         works for: 	palindrome 
+							racecar
+							Evil olive
+							A  Toyota
 	 */
 	public String parse (String inputString) 
 	{ 
+		String outputString = new String(inputString);
+		
 		int length;
 		boolean inPal = false;
 		int i = 1;
 		int j = 1;
 		int k = 0;
-		char[][] pals = new char[10][100];
-		String outputString = new String(inputString);
+		
+		String tempString = new String();
+		String[] pals = new String[10];  //stores all the pals
+		String[] palsUnique = new String[10]; //pals without duplicates
+		
+		//make new stringbuilder, must be better way to declare and fill
+		StringBuilder tempStringBuild = new StringBuilder(30);
+		for(int l = 0;l < tempStringBuild.capacity();l++)
+		{
+			tempStringBuild.insert(0,' ');
+		}
 		
 		//clean string
 		outputString = outputString.toUpperCase();
@@ -89,18 +105,28 @@ public class A1Driver
 			char temp3 = outputString.charAt(i - 1);
 			char temp1 = outputString.charAt(i);
 			char temp2 = outputString.charAt(i + 1);
+			int length2 = length/2;
 			
-			//fill 2d array, don't when i+j hits end of string or i-j goes negative
+			//create pal string, starts in the middle of stringbuilder and works outward
 			while((i + j != length && i - j > -1) && (outputString.charAt(i - j) == outputString.charAt(i + j)))
 			{
 				inPal = true;  //set flag so we can do stuff when we leave
-				pals[k][i] = outputString.charAt(i);
-				pals[k][i - j] = outputString.charAt(i - j);
-				pals[k][i + j] = outputString.charAt(i + j);	
+				tempStringBuild.setCharAt(length/2, outputString.charAt(i));
+				tempStringBuild.setCharAt(length/2 + j, outputString.charAt(i + j));
+				tempStringBuild.setCharAt(length/2 - j, outputString.charAt(i - j));
 				j++;
 			}
 			if(inPal)
 			{
+				tempString = tempStringBuild.toString();
+				tempString = tempString.replaceAll("\\s+","");  //remove all whitespace
+				pals[k] = tempString; //store the pal
+				//must be better way to declare and fill
+				tempStringBuild = new StringBuilder(30);
+				for(int l = 0;l < tempStringBuild.capacity();l++)
+				{
+					tempStringBuild.insert(0,' ');
+				}
 				inPal = false;
 				j = 1;  //reset offset
 				k++;  //increment array for new pal occurence
@@ -108,28 +134,47 @@ public class A1Driver
 			i++;
 		}
 		
-		//todo: check for pals in middle of longer pals
 		
-
-		outputString = ""; //clear the output string so we can fill it with all palindromes
-		int col;
-		int row;		
 		
-		//combine all paliondromes in 2d array into one string
-		for(row = 0; row < pals.length; row++)
+		//clear output string
+		outputString = "";
+		int m = 1;
+		palsUnique[0] = pals[0];
+		
+		for(int l = 1;l < k;l++)
 		{
-			for(col = 0; col < pals[0].length; col++)
+			while(palsUnique[m] != null)
 			{
-				if(pals[row][col] != 0)
+				if(pals[l] != palsUnique[m])
 				{
-					outputString = outputString + pals[row][col];
+					palsUnique[m] = pals[l];
+					m++;
 				}
 			}
-			outputString = outputString + " ";
+			m = 0;
 		}
 		
-		//remove trailing spaces
-		outputString = outputString.replaceFirst("\\s+$","");
+		//no pals
+		if(k == 0)
+		{
+			outputString = "";
+		}
+		
+		//one pal
+		if(k == 1)
+		{
+			outputString = pals[0];
+		}
+		
+		//multiple pals
+		if(k > 1)
+		{
+			while(k > 0)
+			{
+			outputString = pals[k - 1] + " " + outputString;
+			k--;
+			}
+		}
 		
 		return outputString;
 	}
