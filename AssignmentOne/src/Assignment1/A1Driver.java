@@ -78,6 +78,7 @@ public class A1Driver
 		
 		int length;
 		boolean inPal = false;
+		boolean dup = false;
 		int i = 1;
 		int j = 1;
 		int k = 0;
@@ -120,7 +121,19 @@ public class A1Driver
 			{
 				tempString = tempStringBuild.toString();
 				tempString = tempString.replaceAll("\\s+","");  //remove all whitespace
-				pals[k] = tempString; //store the pal
+				for (int p = 0;p < k;p++)
+				{
+					if (tempString.equals(pals[p]))
+					{
+						dup = true;
+					}
+				}
+				if(!dup)
+				{
+					pals[k] = tempString; //store the pal
+					k++;  //increment array for new pal occurence
+
+				}
 				//must be better way to declare and fill
 				tempStringBuild = new StringBuilder(30);
 				for(int l = 0;l < tempStringBuild.capacity();l++)
@@ -129,7 +142,7 @@ public class A1Driver
 				}
 				inPal = false;
 				j = 1;  //reset offset
-				k++;  //increment array for new pal occurence
+				dup = false;
 			}
 			i++;
 		}
@@ -138,7 +151,7 @@ public class A1Driver
 		
 		//clear output string
 		outputString = "";
-		int m = 1;
+/*		int m = 1;
 		palsUnique[0] = pals[0];
 		
 		for(int l = 1;l < k;l++)
@@ -152,7 +165,7 @@ public class A1Driver
 				}
 			}
 			m = 0;
-		}
+		}*/
 		
 		//no pals
 		if(k == 0)
